@@ -16,21 +16,15 @@ part 'model/request/electrum_request_types.dart';
 class ElectrumService {
   // static final ElectrumClient _instance = ElectrumClient._();
   int _idCounter = 0;
-  SocketManager _socketManager;
+  final SocketManager _socketManager;
   Timer? _pingTimer;
 
   int get reqId => _idCounter;
 
   SocketConnectionStatus get connectionStatus => _socketManager.connectionStatus;
 
-  ElectrumService._() : _socketManager = SocketManager();
-
-  factory ElectrumService({SocketManager? socketManager}) {
-    ElectrumService instance = ElectrumService._();
-    instance._socketManager = socketManager ?? SocketManager();
-
-    return instance;
-  }
+  ElectrumService({SocketManager? socketManager})
+      : _socketManager = socketManager ?? SocketManager();
 
   Future<void> connect(String host, int port, {bool ssl = true}) async {
     await _socketManager.connect(host, port, ssl: ssl);
